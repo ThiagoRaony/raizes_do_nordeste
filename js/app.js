@@ -247,3 +247,70 @@
 	}
 
 	})();
+
+// Renderizar Carrinho
+document.addEventListener("DOMContentLoaded", function () {
+
+  const listaCarrinho = document.getElementById("listaCarrinho");
+
+  if (listaCarrinho) {
+
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    if (carrinho.length === 0) {
+      listaCarrinho.innerHTML = "<p>Carrinho vazio.</p>";
+      return;
+    }
+
+    let total = 0;
+
+    carrinho.forEach((item, index) => {
+      total += item.preco;
+
+      listaCarrinho.innerHTML += `
+        <div class="card p-3 mb-2 shadow-sm">
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong>${item.nome}</strong><br>
+              R$ ${item.preco}
+            </div>
+            <button class="btn btn-danger btn-sm"
+              onclick="removerItem(${index})">
+              Remover
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    document.getElementById("totalCarrinho").innerText =
+      "Total: R$ " + total.toFixed(2);
+  }
+
+});
+
+function removerItem(index) {
+  let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+  carrinho.splice(index, 1);
+
+  localStorage.setItem("carrinho", JSON.stringify(carrinho));
+
+  location.reload();
+}
+
+function finalizarCompra() {
+
+  let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+  if (carrinho.length === 0) {
+    alert("Carrinho vazio!");
+    return;
+  }
+
+  alert("Pagamento aprovado! Pedido confirmado.");
+
+  localStorage.removeItem("carrinho");
+
+  window.location.href = "index.html";
+}
