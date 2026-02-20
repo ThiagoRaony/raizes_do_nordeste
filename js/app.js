@@ -2,68 +2,22 @@
 (function(){
 	console.log('Raízes do Nordeste - app.js carregado');
 
-	function getData(){
-		if(window.MOCK_DATA && Array.isArray(window.MOCK_DATA.menu)){
-			return Promise.resolve(window.MOCK_DATA);
+	// Garantir que o carrinho é sempre lido do localStorage
+	window.carrinhoLocal = function(){
+		try{
+			return JSON.parse(localStorage.getItem('carrinho')) || [];
+		}catch(e){
+			return [];
 		}
-		return fetch('data/data.json').then(r=>r.json()).catch(()=> (window.MOCK_DATA || {menu:[]}));
-	}
+	};
 
-	function renderCardapio(menu){
-		// Suporta duas estruturas: página com <main> ou página com #listaProdutos
-		const main = document.querySelector('main');
-		const lista = document.getElementById('listaProdutos');
-		const tituloEl = document.getElementById('tituloUnidade');
-		if(tituloEl){
-			const unidade = localStorage.getItem('unidadeSelecionada') || 'Cardápio Geral';
-			tituloEl.textContent = unidade;
-		}
-		if(lista){
-			lista.innerHTML = '';
-			menu.forEach((item,i)=>{
-				const col = document.createElement('div'); col.className = 'col-md-4 mb-3';
-				col.innerHTML = `
-					<div class="card item h-100">
-						<img src="${item.img||'https://via.placeholder.com/400x300'}" class="card-img-top" style="height:180px;object-fit:cover" alt="${item.name}">
-						<div class="card-body d-flex flex-column">
-							<h5 class="card-title">${item.name}</h5>
-							<p class="card-text text-muted small">${item.desc||''}</p>
-							<div class="mt-auto d-flex justify-content-between align-items-center">
-								<strong>R$ ${Number(item.price||0).toFixed(2)}</strong>
-								<button class="btn btn-sm btn-raiz add">Adicionar</button>
-							</div>
-						</div>
-					</div>
-				`;
-				lista.appendChild(col);
-			});
-			document.querySelectorAll('#listaProdutos .add').forEach((btn,i)=>btn.addEventListener('click',()=> addToCart(menu[i])));
-			return;
-		}
-		// fallback: render dentro do <main> usando grid simples
-		if(main){
-			const grid = document.createElement('div'); grid.className='cardapio';
-			menu.forEach(item=>{
-				const div = document.createElement('div'); div.className='item';
-				div.innerHTML = `
-					<img src="${item.img||'https://via.placeholder.com/400x300'}" alt="${item.name}">
-					<h3>${item.name}</h3>
-					<p>${item.desc||''}</p>
-					<strong>R$ ${Number(item.price||0).toFixed(2)}</strong>
-					<div style=\"margin-top:.5rem\"><button class=\"btn add\">Adicionar</button></div>
-				`;
-				grid.appendChild(div);
-			});
-			main.innerHTML=''; main.appendChild(grid);
-			document.querySelectorAll('.add').forEach((btn,i)=>btn.addEventListener('click',()=> addToCart(menu[i])));
-		}
-	}
+
 
 	window.cart = window.cart || [];
 	function addToCart(item){
 		window.cart.push(item);
 		updateCartBadge();
-		try{ alert(item.name + ' adicionado ao carrinho'); }catch(e){}
+		if(item && item.name) showToast(item.name + ' adicionado ao carrinho', 'success');
 	}
 
 	// Compatibilidade: função que adiciona ao carrinho usando localStorage
@@ -73,40 +27,44 @@
 		localStorage.setItem('carrinho', JSON.stringify(carrinho));
 		// sincroniza réplica em memória e atualiza badge
 		try{ addToCart({ id: id, name: nome, price: preco }); }catch(e){}
-		try{ alert('Produto adicionado ao carrinho!'); }catch(e){}
+		showToast('Produto adicionado ao carrinho!', 'success');
 	};
 
-	function updateCartBadge(){
-		let el = document.querySelector('.cart');
-		if(!el){ el = document.createElement('a'); el.href='carrinho.html'; el.className='cart'; document.body.appendChild(el); }
-		const carrinhoLocal = JSON.parse(localStorage.getItem('carrinho')) || [];
-		const count = (Array.isArray(carrinhoLocal) && carrinhoLocal.length) || (window.cart && window.cart.length) || 0;
-		el.textContent = `Carrinho (${count})`;
+	// Toast utilitário (inline, sem dependência de JS do Bootstrap)
+	function showToast(message, type){
+		const containerClass = 'toast-container-app';
+		let container = document.querySelector('.' + containerClass);
+		if(!container){
+			container = document.createElement('div');
+			container.className = containerClass;
+			document.body.appendChild(container);
+		}
+		const toast = document.createElement('div');
+		toast.className = 'app-toast ' + (type || 'info');
+		toast.textContent = message;
+		container.appendChild(toast);
+		setTimeout(()=>{ toast.classList.add('hide'); }, 2200);
+		setTimeout(()=>{ try{ container.removeChild(toast); }catch(e){} }, 2600);
 	}
 
-	const isCardapio = location.pathname.endsWith('cardapio.html') || document.querySelector('.cardapio') !== null;
-	if(isCardapio) getData().then(d=>{
-		const unidade = localStorage.getItem('unidadeSelecionada');
-		let menuToRender = [];
-		if(unidade && d.produtosPorUnidade && d.produtosPorUnidade[unidade]){
-			menuToRender = d.produtosPorUnidade[unidade].map(p=>({
-				id: p.id,
-				name: p.nome,
-				desc: p.categoria || '',
-				price: p.preco,
-				img: p.img
-			}));
-		}else{
-			menuToRender = d.menu || [];
+	function updateCartBadge(){
+		try{
+			const els = document.querySelectorAll('.cart, [data-cart-badge]');
+			const carrinhoLocal = window.carrinhoLocal();
+			const count = carrinhoLocal.length;
+			els.forEach(el => el.textContent = `Carrinho (${count})`);
+		}catch(e){
+			console.warn('Erro ao atualizar badge do carrinho', e);
 		}
-		renderCardapio(menuToRender);
-	});
-	updateCartBadge();
+	}
+
+
 
 
 	// Validação e mensagens inline utilitários
 	function validateEmail(email){
-		return /\S+@\S+\.\S+/.test(email);
+		const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return re.test(String(email).toLowerCase());
 	}
 
 	function clearErrors(form){
@@ -121,6 +79,7 @@
 		const fb = document.createElement('div');
 		fb.className = 'invalid-feedback';
 		fb.textContent = message;
+		fb.style.display = 'block';
 		// checkbox sits inside .form-check; append after parent when needed
 		if(input.type === 'checkbox' && input.parentNode){
 			input.parentNode.appendChild(fb);
@@ -131,37 +90,48 @@
 		}
 	}
 
-	const alerta = document.getElementById('alerta');
 
 	// Cadastro com validação
 	const formCadastro = document.getElementById('formCadastro');
 	if(formCadastro){
 		formCadastro.addEventListener('submit', function(e){
 			e.preventDefault();
-			clearErrors(formCadastro);
+			try{
+				clearErrors(formCadastro);
 
-			const nomeIn = document.getElementById('nomeCadastro');
-			const emailIn = document.getElementById('emailCadastro');
-			const senhaIn = document.getElementById('senhaCadastro');
-			const lgpdIn = document.getElementById('lgpdCheck');
+				const nomeIn = document.getElementById('nomeCadastro');
+				const emailIn = document.getElementById('emailCadastro');
+				const senhaIn = document.getElementById('senhaCadastro');
+				const lgpdIn = document.getElementById('lgpdCheck');
 
-			const nome = nomeIn.value.trim();
-			const email = emailIn.value.trim();
-			const senha = senhaIn.value;
+				if(!nomeIn || !emailIn || !senhaIn || !lgpdIn){
+					console.warn('Elementos do formulário de cadastro não encontrados');
+					return;
+				}
 
-			let valid = true;
-			if(!nome){ showError(nomeIn, 'Informe seu nome.'); valid = false; }
-			if(!validateEmail(email)){ showError(emailIn, 'Informe um email válido.'); valid = false; }
-			if(senha.length < 6){ showError(senhaIn, 'A senha deve ter ao menos 6 caracteres.'); valid = false; }
-			if(!lgpdIn.checked){ showError(lgpdIn, 'É necessário aceitar a Política de Privacidade (LGPD).'); valid = false; }
+				const nome = nomeIn.value.trim();
+				const email = emailIn.value.trim();
+				const senha = senhaIn.value;
 
-			if(!valid) return;
+				let valid = true;
+				if(!nome){ showError(nomeIn, 'Informe seu nome.'); valid = false; }
+				if(!validateEmail(email)){ showError(emailIn, 'Informe um email válido.'); valid = false; }
+				if(senha.length < 6){ showError(senhaIn, 'A senha deve ter ao menos 6 caracteres.'); valid = false; }
+				if(!lgpdIn.checked){ showError(lgpdIn, 'É necessário aceitar a Política de Privacidade (LGPD).'); valid = false; }
 
-			const usuario = { nome, email, senha, pontos: 0 };
-			localStorage.setItem('usuario', JSON.stringify(usuario));
+				if(!valid) return;
 
-			if(alerta) alerta.innerHTML = `<div class="alert alert-success">Cadastro realizado com sucesso! Faça login.</div>`;
-			formCadastro.reset();
+				const usuario = { nome, email, senha, pontos: 0 };
+				localStorage.setItem('usuario', JSON.stringify(usuario));
+
+				const alerta = document.getElementById('alerta');
+				if(alerta) alerta.innerHTML = `<div class="alert alert-success">Cadastro realizado com sucesso! Faça login.</div>`;
+				formCadastro.reset();
+				showToast('Cadastro realizado!', 'success');
+			}catch(err){
+				console.error('Erro ao processar cadastro:', err);
+				showToast('Erro ao realizar cadastro', 'danger');
+			}
 		});
 	}
 
@@ -170,26 +140,40 @@
 	if(formLogin){
 		formLogin.addEventListener('submit', function(e){
 			e.preventDefault();
-			clearErrors(formLogin);
+			try{
+				clearErrors(formLogin);
 
-			const emailIn = document.getElementById('emailLogin');
-			const senhaIn = document.getElementById('senhaLogin');
-			const email = emailIn.value.trim();
-			const senha = senhaIn.value;
+				const emailIn = document.getElementById('emailLogin');
+				const senhaIn = document.getElementById('senhaLogin');
 
-			let valid = true;
-			if(!validateEmail(email)){ showError(emailIn, 'Informe um email válido.'); valid = false; }
-			if(!senha){ showError(senhaIn, 'Informe a senha.'); valid = false; }
-			if(!valid) return;
+				if(!emailIn || !senhaIn){
+					console.warn('Elementos do formulário de login não encontrados');
+					return;
+				}
 
-			const usuario = JSON.parse(localStorage.getItem('usuario'));
-			if(usuario && usuario.email === email && usuario.senha === senha){
-				localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
-				window.location.href = 'cardapio.html';
-			}else{
-				if(alerta) alerta.innerHTML = `<div class="alert alert-danger">Email ou senha inválidos</div>`;
-				showError(emailIn, 'Credenciais inválidas.');
-				showError(senhaIn, 'Credenciais inválidas.');
+				const email = emailIn.value.trim();
+				const senha = senhaIn.value;
+
+				let valid = true;
+				if(!validateEmail(email)){ showError(emailIn, 'Informe um email válido.'); valid = false; }
+				if(!senha){ showError(senhaIn, 'Informe a senha.'); valid = false; }
+				if(!valid) return;
+
+				const usuarioJson = localStorage.getItem('usuario');
+				const usuario = usuarioJson ? JSON.parse(usuarioJson) : null;
+
+				if(usuario && usuario.email === email && usuario.senha === senha){
+					localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+					window.location.href = 'cardapio.html';
+				}else{
+					const alerta = document.getElementById('alerta');
+					if(alerta) alerta.innerHTML = `<div class="alert alert-danger">Email ou senha inválidos</div>`;
+					showError(emailIn, 'Credenciais inválidas.');
+					showError(senhaIn, 'Credenciais inválidas.');
+				}
+			}catch(err){
+				console.error('Erro ao processar login:', err);
+				showToast('Erro ao fazer login', 'danger');
 			}
 		});
 	}
@@ -203,5 +187,63 @@
 		}
 		window.location.href = 'login.html';
 	};
+
+	// Renderização do cardápio ao carregamento completo do DOM
+	document.addEventListener("DOMContentLoaded", function () {
+
+		const listaProdutos = document.getElementById("listaProdutos");
+		const tituloUnidade = document.getElementById("tituloUnidade");
+
+		if (listaProdutos && tituloUnidade && window.produtos) {
+			const unidade = localStorage.getItem("unidadeSelecionada");
+
+			if (unidade) {
+				tituloUnidade.innerText = "Unidade: " + unidade;
+			}
+
+			const produtosUnidade = window.produtos[unidade] || [];
+
+			if (produtosUnidade.length === 0) {
+				listaProdutos.innerHTML = '<p class="text-muted">Nenhum produto disponível para esta unidade.</p>';
+				return;
+			}
+
+			produtosUnidade.forEach(produto => {
+				if(!produto || !produto.id || !produto.nome) return;
+				const card = `
+					<div class="col-md-4 mb-3">
+						<div class="card p-3 shadow-sm">
+							<h5>${produto.nome}</h5>
+							<p>R$ ${Number(produto.preco || 0).toFixed(2)}</p>
+							<button class="btn btn-raiz"
+								onclick="adicionarCarrinho(${produto.id}, '${produto.nome.replace(/'/g, "\\'")}', ${produto.preco || 0})">
+								Adicionar
+							</button>
+						</div>
+					</div>
+				`;
+
+				listaProdutos.innerHTML += card;
+			});
+		} else if (!listaProdutos && !tituloUnidade) {
+			// Se não existem elementos do cardápio, não fazer nada
+			return;
+		} else {
+			console.warn('Elementos do cardápio não encontrados ou dados incompletos');
+		}
+
+	});
+
+	// Inicializar badge do carrinho
+	document.addEventListener('DOMContentLoaded', function(){
+		updateCartBadge();
+	});
+	// Fallback: chamar imediatamente se scripts for inline
+	if(document.readyState === 'loading'){
+		// Documento ainda está carregando
+	} else {
+		// Documento já carregou
+		updateCartBadge();
+	}
 
 	})();
