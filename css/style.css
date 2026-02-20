@@ -42,9 +42,20 @@ body {
 .btn-raiz {
 	background-color: #C1440E;
 	color: white;
+	border-color: #C1440E;
 }
 .btn-raiz:hover {
 	background-color: #A6370C;
+	border-color: #A6370C;
+}
+.btn-outline-raiz {
+	color: #C1440E;
+	border-color: #C1440E;
+}
+.btn-outline-raiz:hover {
+	color: white;
+	background-color: #C1440E;
+	border-color: #C1440E;
 }
 .unidade-card {
 	border-radius: 12px;
@@ -63,3 +74,12 @@ body {
 .is-invalid{border-color:#dc3545 !important;color:#dc3545}
 .invalid-feedback{color:#dc3545;font-size:.875rem;display:none;margin-top:.25rem}
 .is-invalid ~ .invalid-feedback{display:block}
+
+/* Navbar e Navegação */
+.navbar-brand{font-weight:600;font-size:1.3rem}
+.navbar{background-color:#f8f8f8}
+
+/* Melhorias de Cards e Layout */
+.card{border:0;transition:box-shadow .2s ease}
+.card:hover{box-shadow:0 8px 16px rgba(0,0,0,.1)}
+

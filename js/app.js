@@ -252,52 +252,123 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   const listaCarrinho = document.getElementById("listaCarrinho");
+  const avisoCarrinho = document.getElementById("avisoCarrinho");
+  const btnFinalizar = document.getElementById("btnFinalizar");
 
-  if (listaCarrinho) {
+  if (!listaCarrinho) return; // Se não é página de carrinho, sair
 
-    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  let carrinho = window.carrinhoLocal();
 
-    if (carrinho.length === 0) {
-      listaCarrinho.innerHTML = "<p>Carrinho vazio.</p>";
-      return;
-    }
-
-    let total = 0;
-
-    carrinho.forEach((item, index) => {
-      total += item.preco;
-
-      listaCarrinho.innerHTML += `
-        <div class="card p-3 mb-2 shadow-sm">
-          <div class="d-flex justify-content-between">
-            <div>
-              <strong>${item.nome}</strong><br>
-              R$ ${item.preco}
-            </div>
-            <button class="btn btn-danger btn-sm"
-              onclick="removerItem(${index})">
-              Remover
-            </button>
-          </div>
-        </div>
-      `;
-    });
-
-    document.getElementById("totalCarrinho").innerText =
-      "Total: R$ " + total.toFixed(2);
+  if (carrinho.length === 0) {
+    if(avisoCarrinho) avisoCarrinho.innerHTML = '<div class="alert alert-info">Seu carrinho está vazio. <a href="cardapio.html">Voltar ao cardápio</a></div>';
+    listaCarrinho.innerHTML = '';
+    if(btnFinalizar) btnFinalizar.disabled = true;
+    const totalEl = document.getElementById("totalCarrinho");
+    if(totalEl) totalEl.innerHTML = '<strong>Total: R$ 0,00</strong>';
+    return;
   }
+
+  let total = 0;
+  listaCarrinho.innerHTML = '';
+
+  carrinho.forEach((item, index) => {
+    if(!item || !item.nome || typeof item.preco !== 'number') return;
+    
+    const preco = Number(item.preco);
+    total += preco;
+
+    const itemCard = document.createElement('div');
+    itemCard.className = 'card p-3 mb-2 shadow-sm';
+    itemCard.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="flex-grow-1">
+          <strong>${String(item.nome).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</strong><br>
+          <span class="text-muted">Quantidade: 1</span><br>
+          <strong>R$ ${preco.toFixed(2)}</strong>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="removerItem(${index})" title="Remover do carrinho">
+          🗑️ Remover
+        </button>
+      </div>
+    `;
+    listaCarrinho.appendChild(itemCard);
+  });
+
+  const totalCarrinho = document.getElementById("totalCarrinho");
+  if(totalCarrinho) totalCarrinho.innerHTML = `<strong>Total: R$ ${total.toFixed(2)}</strong>`;
+  
+  if(btnFinalizar) btnFinalizar.disabled = false;
 
 });
 
-function removerItem(index) {
-  let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+window.removerItem = function(index) {
+  try{
+    let carrinho = window.carrinhoLocal();
+    
+    if(index < 0 || index >= carrinho.length){
+      console.warn('Índice inválido');
+      return;
+    }
 
-  carrinho.splice(index, 1);
+    const itemRemovido = carrinho[index];
+    carrinho.splice(index, 1);
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    
+    showToast(`${itemRemovido.nome} removido do carrinho`, 'info');
+    updateCartBadge();
+    
+    // Recarregar a exibição do carrinho
+    location.reload();
+  }catch(err){
+    console.error('Erro ao remover item:', err);
+    showToast('Erro ao remover item', 'danger');
+  }
+};
 
-  localStorage.setItem("carrinho", JSON.stringify(carrinho));
+window.finalizarCompra = function() {
+  try{
+    const carrinho = window.carrinhoLocal();
+    
+    if(carrinho.length === 0){
+      showToast('Carrinho vazio', 'danger');
+      return;
+    }
 
-  location.reload();
-}
+    const usuarioLogado = localStorage.getItem('usuarioLogado');
+    if(!usuarioLogado){
+      showToast('Faça login para finalizar a compra', 'danger');
+      setTimeout(() => window.location.href = 'login.html', 1500);
+      return;
+    }
+
+    // Calcular total
+    const total = carrinho.reduce((sum, item) => sum + (Number(item.preco) || 0), 0);
+
+    // Salvar pedido
+    const pedido = {
+      id: Date.now(),
+      usuario: JSON.parse(usuarioLogado),
+      itens: carrinho,
+      total: total,
+      data: new Date().toISOString(),
+      status: 'pendente'
+    };
+
+    let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    pedidos.push(pedido);
+    localStorage.setItem('pedidos', JSON.stringify(pedidos));
+
+    // Limpar carrinho
+    localStorage.removeItem('carrinho');
+    updateCartBadge();
+
+    showToast('Pedido realizado com sucesso!', 'success');
+    setTimeout(() => window.location.href = 'pagamento.html', 1500);
+  }catch(err){
+    console.error('Erro ao finalizar compra:', err);
+    showToast('Erro ao finalizar compra', 'danger');
+  }
+};
 
 function finalizarCompra() {
 
