@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raízes do Nordeste</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- CSS Customizado -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-areia">
+
+  <div class="container text-center mt-5">
+    <h1 class="titulo-principal mb-4">🌽 Raízes do Nordeste</h1>
+
+    <h4 class="mb-4">Escolha sua unidade</h4>
+
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="card unidade-card p-3">
+          <h5>Recife - Centro</h5>
+          <button class="btn btn-raiz mt-2" onclick="selecionarUnidade('Recife')">Selecionar</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card unidade-card p-3">
+          <h5>Fortaleza - Aldeota</h5>
+          <button class="btn btn-raiz mt-2" onclick="selecionarUnidade('Fortaleza')">Selecionar</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card unidade-card p-3">
+          <h5>Salvador - Barra</h5>
+          <button class="btn btn-raiz mt-2" onclick="selecionarUnidade('Salvador')">Selecionar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
