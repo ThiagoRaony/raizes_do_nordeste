@@ -1,54 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Raízes do Nordeste</title>
-
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- CSS Customizado -->
-  <link rel="stylesheet" href="css/style.css">
-</head>
-
-<body class="bg-areia">
-
-  <div class="container text-center mt-5">
-    <h1 class="titulo-principal mb-4">🌽 Raízes do Nordeste</h1>
-
-    <h4 class="mb-4">Escolha sua unidade</h4>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="card unidade-card p-3">
-          <h5>Recife - Centro</h5>
-          <button class="btn btn-raiz mt-2" onclick="selecionarUnidade('Recife')">Selecionar</button>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card unidade-card p-3">
-          <h5>Fortaleza - Aldeota</h5>
-          <button class="btn btn-raiz mt-2" onclick="selecionarUnidade('Fortaleza')">Selecionar</button>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card unidade-card p-3">
-          <h5>Salvador - Barra</h5>
-          <button class="btn btn-raiz mt-2" onclick="selecionarUnidade('Salvador')">Selecionar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="js/app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌴%3C/text%3E%3C/svg%3E" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Raízes do Nordeste - Rede de lanchonetes nordestinas com culinária regional autêntica. Peça online e acompanhe seu pedido." />
+    <meta name="keywords" content="Raízes do Nordeste, lanchonete nordestina, cuscuz, tapioca, comida regional, delivery" />
+    <meta name="author" content="Raízes do Nordeste" />
+    <meta name="robots" content="index, follow" />
+    <meta name="geo.region" content="BR" />
+    <meta name="geo.placename" content="Recife, Pernambuco" />
+    <meta property="og:title" content="Raízes do Nordeste - Lanchonetes Regionais" />
+    <meta property="og:description" content="Culinária nordestina autêntica com entrega rápida. Conheça nossas unidades." />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.min.css" />
+    <title>Raízes do Nordeste - Culinária Nordestina Autêntica</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
