@@ -129,7 +129,7 @@ O projeto foi desenvolvido com foco em experiência do usuário, clareza de nave
 
 ---
 
-# docs/REQUISITOS.md
+# REQUISITOS.md
 
 ```md
 # Requisitos do Sistema
@@ -174,7 +174,7 @@ O projeto foi desenvolvido com foco em experiência do usuário, clareza de nave
 
 ---
 
-# docs/ARQUITETURA.md
+# ARQUITETURA.md
 
 ```md
 # Arquitetura Front-end
@@ -289,7 +289,7 @@ A estrutura foi organizada para permitir:
 
 ---
 
-# docs/JORNADA_USUARIO.md
+# JORNADA_USUARIO.md
 
 ```md
 # Jornada do Usuário
@@ -343,7 +343,7 @@ Pontos são adicionados após conclusão do pedido.
 
 ---
 
-# docs/LGPD.md
+# LGPD.md
 
 ```md
 # LGPD e Privacidade
@@ -397,7 +397,7 @@ A arquitetura foi projetada considerando:
 
 ---
 
-# docs/TESTES.md
+# TESTES.md
 
 ```md
 # Plano de Testes
@@ -458,7 +458,7 @@ Verificação de:
 
 ---
 
-# docs/DECISOES_TECNICAS.md
+# DECISOES_TECNICAS.md
 
 ```md
 # Decisões Técnicas
@@ -521,7 +521,7 @@ Dados mockados foram utilizados para:
 
 ---
 
-# docs/TOTEM.md
+# TOTEM.md
 
 ```md
 # Fluxo do Totem
@@ -562,7 +562,7 @@ Permitir autoatendimento rápido em loja física.
 
 ---
 
-# docs/CONCLUSAO.md
+# CONCLUSAO.md
 
 ```md
 # Conclusão
@@ -592,7 +592,7 @@ Além dos aspectos técnicos, o projeto buscou representar uma solução coerent
 
 ---
 
-# docs/REFERENCIAS.md
+# REFERENCIAS.md
 
 ```md
 # Referências
