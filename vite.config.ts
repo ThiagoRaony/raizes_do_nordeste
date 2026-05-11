@@ -3,7 +3,9 @@ import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import AutoImport from "unplugin-auto-import/vite";
 
-const base = "./";
+// Para desenvolvimento use "./", para GitHub Pages use "/raizes_do_nordeste/"
+const isProd = process.env.NODE_ENV === "production";
+const base = isProd ? "/raizes_do_nordeste/" : "./";
 
 export default defineConfig({
   define: {
@@ -48,6 +50,13 @@ export default defineConfig({
   build: {
     sourcemap: true,
     outDir: "dist",
+    rollupOptions: {
+      output: {
+        entryFileNames: "[name].[hash].js",
+        chunkFileNames: "[name].[hash].js",
+        assetFileNames: "[name].[hash][extname]",
+      },
+    },
   },
   resolve: {
     alias: {
