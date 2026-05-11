@@ -65,7 +65,7 @@ export const units: Unit[] = [
     telefone: '(98) 3210-9876',
     horario: '06:30 - 21:30',
     imagem: 'https://readdy.ai/api/search-image?query=A%20picturesque%20colonial%20storefront%20facade%20of%20a%20traditional%20northeastern%20Brazilian%20snack%20bar%20called%20Raizes%20do%20Nordeste%20with%20azulejo%20tiles%20decorations%2C%20iron%20balconies%2C%20warm%20lantern%20lighting%2C%20located%20in%20Sao%20Luis%20Maranhao%20historic%20center%2C%20traditional%20maranhense%20decorations%2C%20warm%20earth%20tones%20terracotta%20and%20blue%2C%20high%20quality%20architectural%20photo%2C%20simple%20clean%20background&width=600&height=400&seq=unit-saoluis&orientation=landscape',
-    descricao: 'Culinária maranhense com arroz de cuxá, peixe frito com farofa de dendê, torta de camARão e o inigualável juçara.',
+    descricao: 'Culinaria maranhense com arroz de cuxa, peixe frito com farofa de dende, torta de camarao e o inigualavel jucara.',
     cozinha: 'reduzida',
     regiaoCulinaria: 'Maranhense',
     destaqueSazonal: ['Arroz de Cuxá Festivo', 'Torta de Camarão de São João', 'Juçara Especial'],
