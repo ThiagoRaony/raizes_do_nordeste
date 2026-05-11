@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import AutoImport from "unplugin-auto-import/vite";
 
 const base = "./";
+
 export default defineConfig({
   define: {
     __BASE_PATH__: JSON.stringify(base),
