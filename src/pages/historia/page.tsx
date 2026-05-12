@@ -73,10 +73,6 @@ export default function Historia() {
             Cada unidade da rede preserva a essência da marca, mas também celebra a culinária típica de sua região. Em Salvador, o acarajé e o vatapá reinam. Em Fortaleza, o baião de dois e a tapioca de caju são as estrelas. São Luís traz o arroz de cuxá e a torta de camarão. Natal destaca o camarão no alho e óleo e a tapioca dobrada. Maceió honra o sururu de praia e a manga rosa.
           </p>
 
-          <p className="leading-relaxed">
-            A franqueadora exige padronização, rastreabilidade e transparência, especialmente em um ambiente de crescimento acelerado. O programa de fidelidade reflete nosso compromisso de conhecer e valorizar cada cliente, sempre respeitando sua privacidade — conforme a diretriz de Dona Francisca desde o primeiro dia: "Conhecer o cliente é importante, mas respeitar sua privacidade é fundamental."
-          </p>
-
           <p className="text-base text-grafite font-body leading-relaxed">
             Disposição, resiliência, dedicação e criatividade não são diferenciais por aqui — são requisitos. E é com essa postura que seguimos expandindo as Raízes do Nordeste, levando sabor, tradição e acolhimento para cada canto do Brasil.
           </p>
