@@ -5,11 +5,10 @@ import { CartProvider } from "./context/CartContext";
 import { LgpdBanner } from "./components/LgpdBanner";
 
 function App() {
-  const baseName = import.meta.env.PROD ? "/raizes_do_nordeste" : "";
   return (
     <AuthProvider>
       <CartProvider>
-        <HashRouter basename={baseName}>
+        <HashRouter>
           <AppRoutes />
           <LgpdBanner />
         </HashRouter>
