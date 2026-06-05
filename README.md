@@ -1,104 +1,188 @@
 # Raízes do Nordeste
 
-Sistema de pedidos online para rede de lanchonetes com culinária nordestina.
+Projeto desenvolvido para a disciplina de **Projeto Multidisciplinar** do curso de **Análise e Desenvolvimento de Sistemas – UNINTER**.
 
-## Tecnologias
+O sistema simula uma plataforma de pedidos online para uma rede fictícia de lanchonetes especializadas em culinária nordestina, permitindo que o usuário escolha uma unidade, navegue pelo cardápio, realize pedidos, acompanhe o status da compra e tenha acesso a recursos de fidelidade e administração.
 
-- **React 19** - Interface do usuario
-- **TypeScript** - Tipagem estatica
-- **Tailwind CSS** - Estilos utilitarios
-- **React Router DOM** - Navegacao entre paginas
-- **Recharts** - Graficos do painel admin
-- **Remix Icon** - Icones via CDN
-- **Google Fonts** - Tipografia (DM Sans, Inter, Great Vibes, Cormorant Garamond)
-- **Vite** - Build tool e dev server
+---
 
-## Funcionalidades
+## Sobre o Projeto
 
-- Escolha de unidade (6 lanchonetes no Nordeste)
-- Cardapio com categorias e produtos regionais
-- Carrinho de compras com persistencia local
-- Sistema de login/cadastro simples (localStorage)
-- Checkout com PIX, Cartao (simulacao) e Dinheiro
-- Programa de fidelidade com descontos
-- Acompanhamento de pedido em tempo real
-- Painel administrativo com senha `adm2026`
-- Dashboard com graficos de vendas e clientes
-- Banner de cookies (LGPD)
+O objetivo deste trabalho foi aplicar, em um cenário próximo ao mercado real, conceitos de desenvolvimento Front-End, experiência do usuário, responsividade, organização de código e boas práticas de versionamento.
 
-## Estrutura de Pastas
+A proposta foi construir uma aplicação completa com foco em dispositivos móveis, simulando o fluxo de atendimento de uma rede de franquias espalhadas pelo Nordeste brasileiro.
 
-```
+Durante o desenvolvimento foi adotada a abordagem **Mobile First**, na qual a interface foi inicialmente planejada para smartphones e posteriormente adaptada para tablets e computadores. Essa estratégia permitiu priorizar a experiência do usuário em dispositivos móveis, garantindo uma navegação intuitiva e consistente em diferentes tamanhos de tela.
+
+---
+
+## Funcionalidades Implementadas
+
+### Área do Cliente
+
+* Seleção de unidades da rede
+* Login e cadastro de usuários
+* Navegação por cardápio regional
+* Visualização detalhada de produtos
+* Carrinho de compras
+* Checkout com simulação de pagamento
+* Acompanhamento de pedidos
+* Histórico de pedidos
+* Programa de fidelidade
+* Gerenciamento de perfil
+* Política de Privacidade e LGPD
+
+### Área Administrativa
+
+* Dashboard administrativo
+* Controle e visualização de pedidos
+* Indicadores de desempenho
+* Relatórios simulados
+* Gestão básica da operação
+
+---
+
+## Tecnologias Utilizadas
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* React Router
+* Recharts
+* Remix Icon
+
+---
+
+## Estrutura do Projeto
+
+```text
 src/
-  components/        - Componentes reutilizaveis
-    Logo.tsx          - Logo SVG da marca (3 opcoes de estilo)
-    Navbar.tsx        - Barra de navegacao
-    Toast.tsx         - Notificacoes temporarias
-    LgpdBanner.tsx    - Banner de consentimento de cookies
-    UnitSwitchModal.tsx - Modal de troca de unidade
-  context/           - Contextos React
-    AuthContext.tsx   - Autenticacao de usuarios
-    CartContext.tsx   - Carrinho de compras
-  hooks/             - Hooks personalizados
-    useOrders.ts      - Gerenciamento de pedidos
-  mocks/             - Dados simulados
-    products.ts       - Produtos por unidade
-    units.ts          - Dados das lanchonetes
-    categories.ts     - Categorias do cardapio
-  pages/             - Paginas da aplicacao
-    home/             - Pagina inicial com hero e unidades
-    login/            - Login de usuarios
-    cardapio/         - Cardapio da unidade
-    produto/          - Detalhe do produto
-    carrinho/         - Carrinho e checkout
-    acompanhamento/   - Acompanhamento de pedido
-    pedidos/          - Historico de pedidos
-    perfil/           - Perfil do usuario
-    historia/         - Historia da marca
-    admin/            - Painel administrativo
-    admin-login/      - Tela de acesso ao admin
-    totem/            - Totem de pedidos
-    ...
-  router/            - Configuracao de rotas
-    config.tsx        - Definicao das rotas
-    index.ts          - Renderizacao das rotas
-  App.tsx            - Componente raiz
-  main.tsx           - Ponto de entrada
-  index.css          - Estilos globais e Tailwind
+├── components/
+├── context/
+├── hooks/
+├── mocks/
+├── pages/
+├── router/
+├── App.tsx
+└── main.tsx
 ```
 
-## Instalacao
+### Organização das Pastas
+
+**components**
+Componentes reutilizáveis da interface.
+
+**context**
+Gerenciamento de estado global da aplicação.
+
+**hooks**
+Lógicas compartilhadas e reutilizáveis.
+
+**mocks**
+Base de dados simulada utilizada durante o desenvolvimento.
+
+**pages**
+Telas completas da aplicação.
+
+**router**
+Configuração das rotas do sistema.
+
+---
+
+## Persistência dos Dados
+
+Por se tratar de um projeto acadêmico, os dados são armazenados localmente utilizando o **Local Storage** do navegador.
+
+Essa abordagem permitiu demonstrar toda a lógica de funcionamento da aplicação sem a necessidade de integração com um backend ou banco de dados real.
+
+---
+
+## Acesso Administrativo
+
+Para fins de avaliação e testes:
+
+```text
+Rota:
+/admin
+
+Senha:
+adm2026
+```
+
+---
+
+## Executando o Projeto Localmente
+
+### Instalar dependências
 
 ```bash
 npm install
 ```
 
-## Desenvolvimento
+### Executar ambiente de desenvolvimento
 
 ```bash
 npm run dev
 ```
 
-Acesse em http://localhost:5173
+A aplicação estará disponível em:
 
-## Build para producao
+```text
+http://localhost:5173
+```
+
+### Gerar build de produção
 
 ```bash
 npm run build
 ```
 
-Os arquivos sao gerados na pasta `dist/`.
+---
 
-## Deploy no GitHub Pages
+## Publicação
 
-Veja o arquivo `DEPLOY.md` para instrucoes detalhadas.
+O projeto está configurado para publicação automática através do **GitHub Actions**.
 
-## Conta de Admin
+Sempre que alterações forem enviadas para a branch principal, o processo de build e deploy é executado automaticamente no GitHub Pages.
 
-Senha para acessar o painel administrativo: **adm2026**
+---
 
-## Sobre o Projeto
+## Aprendizados Desenvolvidos
 
-Este projeto foi desenvolvido como trabalho acadêmico para apresentacao em faculdade.
+Durante a construção deste projeto foram aplicados conhecimentos relacionados a:
 
-Data: maio de 2026
+* Componentização de interfaces
+* Gerenciamento de estado
+* Roteamento de aplicações SPA
+* Desenvolvimento Mobile First
+* Responsividade
+* Experiência do usuário (UX)
+* Persistência de dados no navegador
+* Versionamento com Git e GitHub
+* Integração contínua com GitHub Actions
+* Publicação de aplicações web
+
+---
+
+## Considerações Finais
+
+O projeto foi desenvolvido com o objetivo de simular uma aplicação próxima de um cenário real de mercado, permitindo colocar em prática conhecimentos adquiridos ao longo do curso.
+
+Além dos aspectos técnicos, a proposta também buscou valorizar elementos da cultura nordestina por meio da identidade visual, cardápio regional e ambientação da marca fictícia **Raízes do Nordeste**.
+
+---
+
+## Autor
+
+**Thiago Raony Gomes de Moura Vicente da Silva**
+
+**RU:** 4576142
+
+**Curso:** Análise e Desenvolvimento de Sistemas
+
+**Instituição:** Universidade UNINTER
+
+---
+
+Este projeto possui finalidade exclusivamente acadêmica e foi desenvolvido para fins de estudo, aprendizado e avaliação.
