@@ -3,7 +3,8 @@ import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import AutoImport from "unplugin-auto-import/vite";
 
-const base = "./";
+const base = "/raizes_do_nordeste/";
+
 
 export default defineConfig({
   define: {
